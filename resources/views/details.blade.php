@@ -99,23 +99,25 @@
                     <h1 class="product-single__name">{{ $product->name }}</h1>
                     <div class="product-single__rating">
                         <div class="reviews-group d-flex">
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
-                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                <use href="#icon_star" />
-                            </svg>
+                            @foreach ($reviews as $review)
+                                @for ($i = 1; $i <= $review->rating; $i++)
+                                    <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"
+                                        fill="#FFD700">
+                                        <use href="#icon_star" />
+                                    </svg>
+                                @endfor
+                                {{-- Empty stars (if rating < 5) --}}
+                                @for ($i = $review->rating + 1; $i <= 5; $i++)
+                                    <svg class="star-rating__star-icon" width="12" height="12" fill="#ccc"
+                                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
+                                    </svg>
+                                @endfor
+                            @endforeach
                         </div>
-                        <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
+                        <span class="reviews-note text-lowercase text-secondary ms-1">{{ $reviews->count() }}
+                            reviews</span>
                     </div>
                     <div class="product-single__price">
                         <span class="current-price">
@@ -184,6 +186,7 @@
                         @endif
                         <share-button class="share-button">
                             <button
+                            onclick="handleShare()"
                                 class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
                                 <svg width="16" height="19" viewBox="0 0 16 19" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -248,7 +251,7 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab"
                             href="#tab-reviews" role="tab" aria-controls="tab-reviews"
-                            aria-selected="false">Reviews (2)</a>
+                            aria-selected="false">Reviews ({{ $reviews->count() }})</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -261,10 +264,10 @@
                     <div class="tab-pane fade" id="tab-additional-info" role="tabpanel"
                         aria-labelledby="tab-additional-info-tab">
                         <div class="product-single__addtional-info">
-                            <div class="item">
+                            {{-- <div class="item">
                                 <label class="h6">Weight</label>
                                 <span>1.25 kg</span>
-                            </div>
+                            </div> --}}
                             <div class="item">
                                 <label class="h6">Dimensions</label>
                                 <span>90 x 60 x 90 cm</span>
@@ -286,143 +289,134 @@
                     <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
                         <h2 class="product-single__reviews-title">Reviews</h2>
                         <div class="product-single__reviews-list">
-                            <div class="product-single__reviews-item">
-                                <div class="customer-avatar">
-                                    <img loading="lazy" src="assets/images/avatar.jpg" alt="" />
-                                </div>
-                                <div class="customer-review">
-                                    <div class="customer-name">
-                                        <h6>Janice Miller</h6>
-                                        <div class="reviews-group d-flex">
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
+                            @foreach ($reviews as $review)
+                                <div class="product-single__reviews-item">
+                                    <div class="customer-avatar">
+                                        <img loading="lazy"
+                                            src="{{ asset('storage/uploads/reviewImage/' . $review->image) }}"
+                                            alt="" />
+                                    </div>
+                                    <div class="customer-review">
+                                        <div class="customer-name">
+                                            <h6>{{ $review->name }}</h6>
+                                            <div class="reviews-group d-flex">
+                                                {{-- Filled stars --}}
+                                                @for ($i = 1; $i <= $review->rating; $i++)
+                                                    <svg class="review-star" viewBox="0 0 9 9"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="#FFD700">
+                                                        <use href="#icon_star" />
+                                                    </svg>
+                                                @endfor
+                                                {{-- Empty stars (if rating < 5) --}}
+                                                @for ($i = $review->rating + 1; $i <= 5; $i++)
+                                                    <svg class="star-rating__star-icon" width="12" height="12"
+                                                        fill="#ccc" viewBox="0 0 12 12"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
+                                                    </svg>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <div class="review-date">{{ $review->created_at->format('m-d-Y') }}</div>
+                                        <div class="review-text">
+                                            <p>{{ $review->comment }}</p>
                                         </div>
                                     </div>
-                                    <div class="review-date">April 06, 2023</div>
-                                    <div class="review-text">
-                                        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit
-                                            quo minus id quod
-                                            maxime placeat facere possimus, omnis voluptas assumenda est…</p>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="product-single__reviews-item">
-                                <div class="customer-avatar">
-                                    <img loading="lazy" src="assets/images/avatar.jpg" alt="" />
-                                </div>
-                                <div class="customer-review">
-                                    <div class="customer-name">
-                                        <h6>Benjam Porter</h6>
-                                        <div class="reviews-group d-flex">
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                            <svg class="review-star" viewBox="0 0 9 9"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_star" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="review-date">April 06, 2023</div>
-                                    <div class="review-text">
-                                        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit
-                                            quo minus id quod
-                                            maxime placeat facere possimus, omnis voluptas assumenda est…</p>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+
                         </div>
                         <div class="product-single__review-form">
-                            <form name="customer-review-form">
-                                <h5>Be the first to review “Message Cotton T-Shirt”</h5>
+                            <form name="customer-review-form" method="POST"
+                                action="{{ route('user.reviews.store') }}" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="rating" id="form-input-rating" value="">
+
+                                <h5>Be the first to review “Message {{ $product->name }}”</h5>
                                 <p>Your email address will not be published. Required fields are marked *</p>
+
                                 <div class="select-star-rating">
                                     <label>Your rating *</label>
-                                    <span class="star-rating">
-                                        <svg class="star-rating__star-icon" width="12" height="12"
-                                            fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                        </svg>
-                                        <svg class="star-rating__star-icon" width="12" height="12"
-                                            fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                        </svg>
-                                        <svg class="star-rating__star-icon" width="12" height="12"
-                                            fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                        </svg>
-                                        <svg class="star-rating__star-icon" width="12" height="12"
-                                            fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                        </svg>
-                                        <svg class="star-rating__star-icon" width="12" height="12"
-                                            fill="#ccc" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7679 4.73884L7.40625 4.25L5.89955 1.20312C5.83929 1.07589 5.72545 0.928571 5.57143 0.928571C5.41741 0.928571 5.30357 1.07589 5.2433 1.20312L3.73661 4.25L0.375 4.73884C0.207589 4.76562 0 4.84598 0 5.04687C0 5.16741 0.0870536 5.28125 0.167411 5.3683L2.60491 7.73884L2.02902 11.0871C2.02232 11.1339 2.01563 11.1741 2.01563 11.221C2.01563 11.3951 2.10268 11.5558 2.29688 11.5558C2.39063 11.5558 2.47768 11.5223 2.56473 11.4754L5.57143 9.89509L8.57813 11.4754C8.65848 11.5223 8.75223 11.5558 8.84598 11.5558C9.04018 11.5558 9.12054 11.3951 9.12054 11.221C9.12054 11.1741 9.12054 11.1339 9.11384 11.0871L8.53795 7.73884L10.9688 5.3683C11.0558 5.28125 11.1429 5.16741 11.1429 5.04687Z" />
-                                        </svg>
+                                    <span class="star-rating" id="star-rating">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="star-rating__star-icon cursor-pointer"
+                                                data-value="{{ $i }}" width="20" height="20"
+                                                fill="#ccc" viewBox="0 0 12 12"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M11.1429 5.04687C11.1429 4.84598 10.9286 4.76562 10.7857 4.76562H7.71429L6.42857 1.29688C6.35714 1.13281 6.21429 1 6 1C5.78571 1 5.64286 1.13281 5.57143 1.29688L4.28571 4.76562H1.21429C1.07143 4.76562 0.857143 4.84598 0.785714 5.04687C0.714286 5.24777 0.785714 5.42969 0.928571 5.55469L3.57143 8.00391L2.5 11.2656C2.42857 11.4297 2.5 11.5938 2.64286 11.6836C2.78571 11.7734 2.92857 11.7734 3.07143 11.6836L6 9.80859L8.92857 11.6836C9.07143 11.7734 9.21429 11.7734 9.35714 11.6836C9.5 11.5938 9.57143 11.4297 9.5 11.2656L8.42857 8.00391L11.0714 5.55469C11.2143 5.42969 11.2857 5.24777 11.1429 5.04687Z" />
+                                            </svg>
+                                        @endfor
                                     </span>
-                                    <input type="hidden" id="form-input-rating" value="" />
+
                                 </div>
+
                                 <div class="mb-4">
-                                    <textarea id="form-input-review" class="form-control form-control_gray" placeholder="Your Review" cols="30"
-                                        rows="8"></textarea>
+                                    <textarea name="comment" class="form-control form-control_gray" placeholder="Your Review" cols="30"
+                                        rows="8">{{ old('comment') }}</textarea>
                                 </div>
+
                                 <div class="form-label-fixed mb-4">
                                     <label for="form-input-name" class="form-label">Name *</label>
-                                    <input id="form-input-name"
+                                    <input name="name" value="{{ old('name') }}" id="form-input-name"
                                         class="form-control form-control-md form-control_gray">
                                 </div>
+
                                 <div class="form-label-fixed mb-4">
                                     <label for="form-input-email" class="form-label">Email address *</label>
-                                    <input id="form-input-email"
-                                        class="form-control form-control-md form-control_gray">
+                                    <input name="email" type="email" value="{{ old('email') }}"
+                                        id="form-input-email" class="form-control form-control-md form-control_gray">
                                 </div>
+
+                                <fieldset class="p-4 border border-gray-300 rounded-xl shadow-sm mb-6">
+                                    <div class="body-title text-lg font-semibold mb-3">
+                                        Upload image
+                                    </div>
+
+                                    <div class="upload-image flex flex-wrap gap-4 items-center">
+                                        <div class="item w-32 h-32 rounded-lg overflow-hidden shadow-md border border-gray-200"
+                                            id="imgpreview">
+                                            @if (old('image'))
+                                                <img src="{{ asset('storage/uploads/reviewImage/' . old('image')) }}"
+                                                    class="object-cover w-full h-full transition duration-300 hover:scale-105"
+                                                    alt="Uploaded Review Image">
+                                            @endif
+                                        </div>
+
+                                        <div id="upload-file"
+                                            class="item up-load w-60 h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition duration-200">
+                                            <label
+                                                class="uploadfile text-center w-full h-full flex flex-col items-center justify-center px-2"
+                                                for="myFile">
+                                                <span class="icon text-3xl text-blue-500 mb-1">
+                                                    <i class="icon-upload-cloud"></i>
+                                                </span>
+                                                <span class="body-text text-sm text-gray-600">
+                                                    Drop your image or <span class="text-blue-500 font-medium">click to
+                                                        browse</span>
+                                                </span>
+                                                <input type="file" id="myFile" name="image" accept="image/*"
+                                                    class="hidden">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
                                 <div class="form-check mb-4">
                                     <input class="form-check-input form-check-input_fill" type="checkbox"
-                                        value="" id="remember_checkbox">
+                                        id="remember_checkbox">
                                     <label class="form-check-label" for="remember_checkbox">
-                                        Save my name, email, and website in this browser for the next time I comment.
+                                        Save my name, email, and website for next time.
                                     </label>
                                 </div>
+
                                 <div class="form-action">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -550,3 +544,35 @@
         </section><!-- /.products-carousel container -->
     </main>
 </x-app-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-rating__star-icon');
+        const ratingInput = document.getElementById('form-input-rating');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-value');
+                ratingInput.value = rating;
+
+                stars.forEach(s => {
+                    const val = s.getAttribute('data-value');
+                    s.setAttribute('fill', val <= rating ? '#FFD700' : '#ccc');
+                });
+            });
+        });
+    });
+
+    function handleShare() {
+        if (navigator.share) {
+            navigator.share({
+                    title: document.title,
+                    text: 'Check this out!',
+                    url: window.location.href,
+                })
+                .then(() => console.log('Shared successfully'))
+                .catch((error) => console.error('Error sharing:', error));
+        } else {
+            alert('Web Share API not supported in this browser.');
+        }
+    }
+</script>

@@ -9,6 +9,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Slide;
 use App\Models\Transaction;
 use App\Models\User;
@@ -320,7 +321,7 @@ class AdminController extends Controller
 
             $product->images = implode(',', $gallery_array);
         }
-        
+
         $product->save();
         return redirect()->route('admin.products')->with('status', 'Product added successfully');
     }
@@ -821,5 +822,24 @@ class AdminController extends Controller
 
         $orderByStatus = Order::groupBy('status');
         return view('admin.inbox', compact('orders', 'orderByStatus'));
+    }
+
+    public function users_reviews()
+    {
+        $userReviews = Review::paginate(12);
+
+        return view('admin.user-review', compact('userReviews'));
+    }
+
+    public function delete_reviews($id)
+    {
+        $review = Review::find($id);
+        if (!$review) {
+            return redirect()->route('admin.uses-reviews')->with('error', 'Review not found');
+        }
+
+        $review->delete();
+
+        return redirect()->route('admin.uses-reviews')->with('status', 'Review deleted successfully');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
@@ -222,4 +223,6 @@ class UserController extends Controller
 
         return view('user.account-wishlist', compact('wishlistItems', 'products'));
     }
+
+    
 }

@@ -109,12 +109,13 @@
                                 <td class="text-center">{{ $item->product->brand->name }}</td>
                                 <td class="text-center">{{ $item->options }}</td>
                                 <td class="text-center">{{ $item->rstatus == 0 ? 'No' : 'Yes' }}</td>
+                                {{-- @dd($item->product->slug); --}}
                                 <td class="text-center">
-                                    <div class="list-icon-function view-icon">
+                                    <a href="{{ route('shop.product.details', ['product_slug' => $item->product->slug]) }}" class="list-icon-function view-icon">
                                         <div class="item eye">
                                             <i class="icon-eye"></i>
                                         </div>
-                                    </div>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -144,9 +145,9 @@
             </div>
         </div>
 
-        <div class="wg-box mt-5">
+        <div class="wg-box mt-5" style="overflow: auto;">
             <h5>Transactions</h5>
-            <table class="table table-striped table-bordered table-transaction">
+            <table class="table table-striped table-bordered table-transaction " >
                 <tbody>
                     <tr>
                         <th>Subtotal</th>

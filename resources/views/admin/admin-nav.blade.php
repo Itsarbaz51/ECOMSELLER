@@ -112,6 +112,12 @@
         </a>
     </li>
     <li class="menu-item">
+        <a href="{{route('admin.uses-reviews')}}" class="">
+            <div class="icon"><i class="icon-star"></i></div>
+            <div class="text">Reviews</div>
+        </a>
+    </li>
+    <li class="menu-item">
         <form action="{{ route('logout') }}" id="logout-form" method="post">
             @csrf
             <a href="{{ route('logout') }}" class="log"

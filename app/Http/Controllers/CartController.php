@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Razorpay\Api\Api;
 use Surfsidemedia\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
@@ -157,9 +158,9 @@ class CartController extends Controller
         $order = new Order();
         $order->user_id = $user_id;
         // dd(Session::get('checkout'));
-        $order->subtotal = Session::get('checkout')['subtotal'];
-        $order->discount = Session::get('checkout')['discount'];
-        $order->tax = Session::get('checkout')['tax'];
+        $order->subtotal = floatval(str_replace(',', '', Session::get('checkout')['subtotal']));
+        $order->discount = floatval(str_replace(',', '', Session::get('checkout')['discount']));
+        $order->tax = floatval(str_replace(',', '', Session::get('checkout')['tax']));
         $order->total = floatval(str_replace(',', '', Session::get('checkout')['total']));
         $order->name = $address->name;
         $order->phone = $address->phone;
@@ -171,7 +172,7 @@ class CartController extends Controller
         $order->landmark = $address->landmark;
         $order->zip = $address->zip;
         $order->save();
-
+        
         foreach (Cart::instance('cart')->content() as $item) {
             $orderItem = new OrderItem();
             $orderItem->product_id = $item->id;
@@ -180,43 +181,30 @@ class CartController extends Controller
             $orderItem->quantity = $item->qty;
             $orderItem->save();
         }
+        // dd($request->mode);
 
-        if ($request->mode == 'card') {
-            //
-        } elseif ($request->mode == 'upi') {
-            // Handle UPI Payment
+        
+        if ($request->mode == 'razorpay') {
+            $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
 
-            // Get the selected UPI method (PhonePe, Google Pay, Paytm)
-            $upiMethod = $request->input('upi-method');  // E.g., 'phonepe', 'gpay', 'paytm'
+            // Create an order with Razorpay
+            $razorpayOrder = $api->order->create([
+                'receipt' => 'rcpt_' . $order->id,
+                'amount' => $order->total * 100, // in paise (Razorpay accepts amounts in paise)
+                'currency' => 'INR',
+            ]);
 
-            // Prepare the UPI payment link (for demonstration, replace with actual values)
-            $upiId = 'merchant@upi';  // Replace with your merchant's UPI ID
-            $amount = 100; // Amount in paise (e.g., ₹1 = 100 paise)
-            $transactionNote = 'Payment for Order #' . $order->id; // Customize the note
-
-            $transactionUrl = '';
-
-            if ($upiMethod === 'phonepe') {
-                $transactionUrl = "upi://pay?pa={$upiId}&pn=MerchantName&mc=1234&tid={$order->id}&url=https://example.com&am={$amount}&tn={$transactionNote}";
-            } elseif ($upiMethod === 'gpay') {
-                $transactionUrl = "upi://pay?pa={$upiId}&pn=MerchantName&mc=1234&tid={$order->id}&url=https://example.com&am={$amount}&tn={$transactionNote}";
-            } elseif ($upiMethod === 'paytm') {
-                $transactionUrl = "upi://pay?pa={$upiId}&pn=MerchantName&mc=1234&tid={$order->id}&url=https://example.com&am={$amount}&tn={$transactionNote}";
-            }
-
-            // Save transaction in the database (store UPI-specific info)
+            // Save the Razorpay order ID to the transaction
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;
-            $transaction->mode = 'upi';  // Set the payment mode as 'upi'
-            $transaction->upi_method = $upiMethod;  // Store the selected UPI method (PhonePe, GPay, Paytm)
-            $transaction->upi_id = $request->input('upi-id');  // Store the UPI ID entered by the user
-            $transaction->transaction_id = 'txn_' . uniqid();  // Generate a unique transaction ID
-            $transaction->status = 'pending';  // Set status as pending until the payment is completed
+            $transaction->mode = 'razorpay';
+            $transaction->status = 'created';  // Transaction created but not yet paid
+            $transaction->razorpay_order_id = $razorpayOrder['id'];
             $transaction->save();
 
-            // Redirect the user to the UPI app (this can be done client-side)
-            return redirect($transactionUrl);  // Redirect to the generated UPI payment URL
+            // Redirect to Razorpay for payment
+            return redirect()->away("https://checkout.razorpay.com/v1/checkout.js?order_id={$razorpayOrder['id']}");
         } elseif ($request->mode == 'cod') {
             $transaction = new Transaction();
             $transaction->user_id = $user_id;

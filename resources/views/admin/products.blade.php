@@ -60,7 +60,7 @@
                                     <td>{{ $product->id }}</td>
                                     <td class="pname">
                                         <div class="image">
-                                           
+
                                             <img src="{{ asset('storage/uploads/products/thumbnails/' . $product->image) }}"
                                                 alt="{{ $product->name }}" class="image" />
 
@@ -80,7 +80,8 @@
                                     <td>{{ $product->quantity }}</td>
                                     <td>
                                         <div class="list-icon-function">
-                                            <a href="#" target="_blank">
+                                            <a href="{{ route('shop.product.details', ['product_slug' => $product->slug]) }}"
+                                                target="_blank">
                                                 <div class="item eye">
                                                     <i class="icon-eye"></i>
                                                 </div>

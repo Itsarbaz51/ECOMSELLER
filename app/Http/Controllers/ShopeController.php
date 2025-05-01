@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ShopeController extends Controller
 {
@@ -65,7 +68,38 @@ class ShopeController extends Controller
     {
         $product = Product::where('slug', $product_slug)->first();
         $products = Product::where('slug', '<>', $product_slug)->get()->take(8);
+        $reviews = Review::all();
 
-        return view('details', compact('product', 'products'));
+        return view('details', compact('product', 'products', 'reviews'));
+    }
+
+    public function review_store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email',
+            'comment'    => 'required|string',
+            'rating'     => 'required|integer|min:1|max:5',
+            'image'      => 'nullable|image|max:2048',
+        ]);
+    
+        $review = new Review();
+        $review->name       = $request->name;
+        $review->email      = $request->email;
+        $review->rating     = $request->rating;
+        $review->product_id = $request->product_id;
+        $review->comment    = $request->comment;
+    
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $fileName = Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('uploads/reviewImage', $fileName, 'public');
+            $review->image = $fileName;
+        }
+    
+        $review->save();
+    
+        return redirect()->back()->with('success', 'Review submitted!');
     }
 }

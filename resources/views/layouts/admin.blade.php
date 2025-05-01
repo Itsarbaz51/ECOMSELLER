@@ -77,7 +77,7 @@
                     <div class="header-dashboard">
                         <div class="wrap">
                             <div class="header-left">
-                                <a href="index-2.html">
+                                <a href="{{route('home.index')}}">
                                     <img class="" id="logo_header_mobile" alt=""
                                         src="{{ asset('images/logo/logo.png') }}"
                                         data-light="{{ asset('images/logo/logo.png') }}"
@@ -117,7 +117,7 @@
                     <div class="main-content">
                         {{ $slot }}
                         <div class="bottom-page">
-                            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+                            <div class="body-text">Copyright © 2025 E-COM-SELLER</div>
                         </div>
                     </div>
 

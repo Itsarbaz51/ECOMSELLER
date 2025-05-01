@@ -15,12 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->enum('mode', ['cod', 'razorpay', 'card']);
+            $table->enum('mode', ['cod', 'razorpay']);
             $table->enum('status', ['pending', 'success', 'failed', 'refunded'])->default('pending');
             $table->timestamps();
-            $table->string('upi_id')->nullable();
-            $table->string('upi_method', 50)->nullable();
-            $table->string('transaction_id')->nullable();
         });
     }
 

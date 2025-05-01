@@ -222,51 +222,17 @@
                             </div>
                             <div class="checkout__payment-methods">
 
-                                <div class="form-check" >
-                                    <input class="form-check-input form-check-input_fill" style="cursor: pointer;" type="radio"
-                                        name="mode" id="mode1" value="card">
+                                <div class="form-check">
+                                    <input class="form-check-input form-check-input_fill" style="cursor: pointer;"
+                                        type="radio" name="mode" id="mode1" value="razorpay" required>
                                     <label class="form-check-label" for="mode1" style="cursor: pointer;">
-                                        Debit / Credit Card
+                                        Online Payment (Razorpay)
                                     </label>
                                 </div>
 
-                                <div class="form-check" >
-                                    <input class="form-check-input form-check-input_fill" type="radio"
-                                        name="mode" id="mode2" value="paypal" style="cursor: pointer;">
-                                    <label class="form-check-label" for="mode2" style="cursor: pointer;">
-                                        UPI
-                                    </label>
-                                </div>
-
-                                <!-- Initially Hidden UPI Payment Options -->
-                                <div id="upi-options" style="display: none;">
-                                    <div class="form-check" >
-                                        <input class="form-check-input" type="radio" name="upi-method"
-                                            id="phonepe" value="phonepe" style="cursor: pointer;">
-                                        <label class="form-check-label" for="phonepe" style="cursor: pointer;">PhonePe</label>
-                                    </div>
-                                    <div class="form-check" >
-                                        <input class="form-check-input" style="cursor: pointer;" type="radio" name="upi-method"
-                                            id="gpay" value="gpay">
-                                        <label class="form-check-label" style="cursor: pointer;" for="gpay">Google Pay</label>
-                                    </div>
-                                    <div class="form-check" style="cursor: pointer;">
-                                        <input class="form-check-input" style="cursor: pointer;" type="radio" name="upi-method"
-                                            id="paytm" value="paytm">
-                                        <label class="form-check-label" style="cursor: pointer;" for="paytm">Paytm</label>
-                                    </div>
-
-                                    <!-- UPI ID input (for the user to enter their UPI ID) -->
-                                    <div>
-                                        <label for="upi-id">Enter your UPI ID:</label>
-                                        <input type="text" id="upi-id" name="upi-id" required>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-check" >
-                                    <input class="form-check-input form-check-input_fill" style="cursor: pointer;" type="radio"
-                                        name="mode" id="mode3" value="cod">
+                                <div class="form-check">
+                                    <input class="form-check-input form-check-input_fill" style="cursor: pointer;"
+                                        type="radio" name="mode" id="mode3" value="cod">
                                     <label class="form-check-label" for="mode3" style="cursor: pointer;">
                                         Cash on Delivery
                                     </label>
@@ -290,17 +256,16 @@
     </main>
 </x-app-layout>
 <script>
-   // JavaScript to show UPI options when UPI is selected
-document.getElementById('mode2').addEventListener('change', function() {
-    if (this.checked) {
-        document.getElementById('upi-options').style.display = 'block';
-    }
-});
+    // JavaScript to show UPI options when UPI is selected
+    document.getElementById('mode2').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('upi-options').style.display = 'block';
+        }
+    });
 
-document.getElementById('mode1').addEventListener('change', function() {
-    if (this.checked) {
-        document.getElementById('upi-options').style.display = 'none'; // Hide UPI options
-    }
-});
-
+    document.getElementById('mode1').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('upi-options').style.display = 'none'; // Hide UPI options
+        }
+    });
 </script>

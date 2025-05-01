@@ -27,7 +27,7 @@
         }
     </style>
 
-    <div class="containerRegister mt-5">
+    <div class="containerRegister mt-5 " style="margin: 0 18px;">
         <h3 class="mb-4">Register</h3>
 
         @if ($errors->any())

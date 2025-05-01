@@ -25,7 +25,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap14">
                                     <div class="image ic-bg">
-                                        <i class="icon-dollar-sign"></i>
+                                        <i class="icon-inr">₹</i>
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Total Amount</div>
@@ -55,7 +55,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap14">
                                     <div class="image ic-bg">
-                                        <i class="icon-dollar-sign"></i>
+                                        <i class="icon-inr-sign">₹</i>
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Pending Orders Amount</div>
@@ -88,7 +88,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap14">
                                     <div class="image ic-bg">
-                                        <i class="icon-dollar-sign"></i>
+                                        <i class="icon-inr-sign">₹</i>
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Delivered Orders Amount</div>
@@ -118,7 +118,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap14">
                                     <div class="image ic-bg">
-                                        <i class="icon-dollar-sign"></i>
+                                        <i class="icon-inr-sign">₹</i>
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Cancelled Orders Amount</div>

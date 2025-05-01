@@ -47,9 +47,9 @@
             </div>
         </section>
         <div class="container mw-1620 bg-white border-radius-10">
-            <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+            <div class="mb-3 mb-xl-5 pt-1 pb-4" id="category"></div>
             <section class="category-carousel container">
-                <h2 class="section-title text-center mb-3 pb-xl-2 mb-xl-4">You Might Like</h2>
+                <h2 class="section-title text-center mb-3 pb-xl-2 mb-xl-4" >You Might Like</h2>
 
                 <div class="position-relative">
                     <div class="swiper-container js-swiper-slider"
@@ -124,7 +124,7 @@
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
             <section class="hot-deals container">
-                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Hot Deals</h2>
+                <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4" id="newArrival">Hot Deals</h2>
                 <div class="row">
                     <div
                         class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">

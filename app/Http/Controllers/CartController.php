@@ -201,7 +201,7 @@ class CartController extends Controller
             $transaction->order_id = $order->id;
             $transaction->mode = 'razorpay';
             $transaction->razorpay_order_id = $razorpayOrder['id'];
-            $transaction->status = 'created';
+            $transaction->status = 'razorpay';
             $transaction->save();
 
         } elseif ($request->mode == 'cod') {

@@ -1,4 +1,13 @@
-<x-admin-layout title="admin-dashboard">
+<?php if (isset($component)) { $__componentOriginal91fdd17964e43374ae18c674f95cdaa3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal91fdd17964e43374ae18c674f95cdaa3 = $attributes; } ?>
+<?php $component = App\View\Components\AdminLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AdminLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'admin-dashboard']); ?>
     <div class="main-content-inner">
 
         <div class="main-content-wrap">
@@ -14,7 +23,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Total Orders</div>
-                                        <h4>{{ optional($dashboardDatas[0])->Total ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->Total ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -29,7 +38,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Total Amount</div>
-                                        <h4>{{ optional(optional($dashboardDatas[0]))->TotalAmount ?? (0 ?? 0) }}</h4>
+                                        <h4><?php echo e(optional(optional($dashboardDatas[0]))->TotalAmount ?? (0 ?? 0)); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -44,7 +53,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Pending Orders</div>
-                                        <h4>{{ optional($dashboardDatas[0])->TotalOrdered ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->TotalOrdered ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +68,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Pending Orders Amount</div>
-                                        <h4>{{ optional($dashboardDatas[0])->TotalOrderedAmount ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->TotalOrderedAmount ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +86,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Delivered Orders</div>
-                                        <h4>{{ optional($dashboardDatas[0])->TotalDelivered ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->TotalDelivered ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +101,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Delivered Orders Amount</div>
-                                        <h4>{{ optional($dashboardDatas[0])->TotalDeliveredAmount ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->TotalDeliveredAmount ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +116,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Cancelled Orders</div>
-                                        <h4>{{ optional($dashboardDatas[0])->TotalCancelled ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->TotalCancelled ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +131,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Cancelled Orders Amount</div>
-                                        <h4>{{ optional($dashboardDatas[0])->TotalCancelledAmount ?? 0 }}</h4>
+                                        <h4><?php echo e(optional($dashboardDatas[0])->TotalCancelledAmount ?? 0); ?></h4>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +155,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap10">
-                                <h4>₹{{ $TotalAmount }}</h4>
+                                <h4>₹<?php echo e($TotalAmount); ?></h4>
 
                             </div>
                         </div>
@@ -158,7 +167,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap10">
-                                <h4>₹{{ $TotalOrderedAmount }}</h4>
+                                <h4>₹<?php echo e($TotalOrderedAmount); ?></h4>
                             </div>
                         </div>
                         <div>
@@ -169,7 +178,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap10">
-                                <h4>₹{{ $TotalDeliveredAmount }}</h4>
+                                <h4>₹<?php echo e($TotalDeliveredAmount); ?></h4>
                             </div>
                         </div>
                         <div>
@@ -180,7 +189,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap10">
-                                <h4>₹{{ $TotalCancelledAmount }}</h4>
+                                <h4>₹<?php echo e($TotalCancelledAmount); ?></h4>
                             </div>
                         </div>
                     </div>
@@ -194,7 +203,7 @@
                     <div class="flex items-center justify-between">
                         <h5>Recent orders</h5>
                         <div class="dropdown default">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('admin.orders') }}">
+                            <a class="btn btn-secondary dropdown-toggle" href="<?php echo e(route('admin.orders')); ?>">
                                 <span class="view-all">View all</span>
                             </a>
                         </div>
@@ -219,30 +228,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orders as $order)
+                                    <?php $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr>
-                                            <td class="text-center">{{ $order->id }}</td>
-                                            <td class="text-center">{{ $order->name }}</td>
-                                            <td class="text-center">{{ $order->phone }}</td>
-                                            <td class="text-center">₹{{ $order->subtotal }}</td>
-                                            <td class="text-center">₹{{ $order->tax }}</td>
-                                            <td class="text-center">₹{{ $order->total }}</td>
+                                            <td class="text-center"><?php echo e($order->id); ?></td>
+                                            <td class="text-center"><?php echo e($order->name); ?></td>
+                                            <td class="text-center"><?php echo e($order->phone); ?></td>
+                                            <td class="text-center">₹<?php echo e($order->subtotal); ?></td>
+                                            <td class="text-center">₹<?php echo e($order->tax); ?></td>
+                                            <td class="text-center">₹<?php echo e($order->total); ?></td>
 
                                             <td class="text-center">
-                                                @if ($order->status == 'cancelled')
+                                                <?php if($order->status == 'cancelled'): ?>
                                                     <span class="badge bg-danger">Cancelled</span>
-                                                @elseif ($order->status == 'delivered')
+                                                <?php elseif($order->status == 'delivered'): ?>
                                                     <span class="badge bg-success">Delivered</span>
-                                                @else
+                                                <?php else: ?>
                                                     <span class="badge bg-warning">Ordered</span>
-                                                @endif
+                                                <?php endif; ?>
                                             </td>
-                                            <td class="text-center">{{ $order->created_at }}</td>
-                                            <td class="text-center">{{ $order->orderItems->count() }}</td>
-                                            <td class="text-center">{{ $order->delivery_date }}</td>
+                                            <td class="text-center"><?php echo e($order->created_at); ?></td>
+                                            <td class="text-center"><?php echo e($order->orderItems->count()); ?></td>
+                                            <td class="text-center"><?php echo e($order->delivery_date); ?></td>
                                             <td class="text-center">
                                                 <a
-                                                    href="{{ route('admin.order.details', ['order_id' => $order->id]) }}">
+                                                    href="<?php echo e(route('admin.order.details', ['order_id' => $order->id])); ?>">
                                                     <div class="list-icon-function view-icon">
                                                         <div class="item eye">
                                                             <i class="icon-eye"></i>
@@ -251,7 +260,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
@@ -262,7 +271,16 @@
         </div>
 
     </div>
-    </x-app-layout>
+     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal91fdd17964e43374ae18c674f95cdaa3)): ?>
+<?php $attributes = $__attributesOriginal91fdd17964e43374ae18c674f95cdaa3; ?>
+<?php unset($__attributesOriginal91fdd17964e43374ae18c674f95cdaa3); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal91fdd17964e43374ae18c674f95cdaa3)): ?>
+<?php $component = $__componentOriginal91fdd17964e43374ae18c674f95cdaa3; ?>
+<?php unset($__componentOriginal91fdd17964e43374ae18c674f95cdaa3); ?>
+<?php endif; ?>
     <script>
         (function($) {
 
@@ -273,17 +291,17 @@
                     var options = {
                         series: [{
                                 name: 'Total',
-                                data: [{{ $AmountM }}]
+                                data: [<?php echo e($AmountM); ?>]
                             }, {
                                 name: 'Pending',
-                                data: [{{ $OrderedAmountM }}]
+                                data: [<?php echo e($OrderedAmountM); ?>]
                             },
                             {
                                 name: 'Delivered',
-                                data: [{{ $DeliveredAmountM }}]
+                                data: [<?php echo e($DeliveredAmountM); ?>]
                             }, {
                                 name: 'Cancelled',
-                                data: [{{ $CancelledAmountM }}]
+                                data: [<?php echo e($CancelledAmountM); ?>]
                             }
                         ],
                         chart: {
@@ -364,3 +382,4 @@
             jQuery(window).on("resize", function() {});
         })(jQuery);
     </script>
+<?php /**PATH C:\Users\hp\Desktop\ECOMSELLER\resources\views/admin/index.blade.php ENDPATH**/ ?>

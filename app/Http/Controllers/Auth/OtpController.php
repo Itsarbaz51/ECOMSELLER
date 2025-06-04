@@ -61,13 +61,11 @@ class OtpController extends Controller
 
         if ($user) {
             $otp = rand(1000, 9999);
-            // dd($otp);
             Session::put('otp', $otp);
             Session::put('otp_created_at', now());
 
-            // Send the OTP again via email
             Mail::to($user->email)->send(new SendOtpMail($otp));
-            
+
 
             Log::info("Resent OTP to {$user->email}: $otp");
 

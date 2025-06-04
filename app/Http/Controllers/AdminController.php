@@ -49,7 +49,7 @@ class AdminController extends Controller
                             SUM(total) As TotalAmount,
                             SUM(if(status = 'ordered', total, 0)) As TotalOrderedAmount,
                             SUM(if(status = 'delivered', total, 0)) As TotalDeliveredAmount,
-                            SUM(if(status = 'cancelled', total, 0)) As TotalCancelledAmount 
+                            SUM(if(status = 'cancelled', total, 0)) As TotalCancelledAmount
                             FROM Orders WHERE YEAR(created_at) = YEAR(NOW()) GROUP BY YEAR(created_at), MONTH(created_at), DATE_FORMAT(created_at, '%b') Order By MONTH(created_at)) D On  D.MonthNo = M.id");
 
         $AmountM = implode(',', collect($monthlyDatas)->pluck('TotalAmount')->toArray());
@@ -280,7 +280,7 @@ class AdminController extends Controller
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
-            'image' => 'nullable|mimes:png,jpg,jpeg|max:4096',
+            'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:4096',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:4096',
             'category_id' => 'required',
             'brand_id' => 'required',
@@ -564,7 +564,7 @@ class AdminController extends Controller
 
         $order->status = $request->order_status;
         if ($request->order_status == 'delivered') {
-            $order->delivery_date    = Carbon::now();
+            $order->delivery_date = Carbon::now();
         } else if ($request->order_status == 'cancelled') {
             $order->cancelled_date = Carbon::now();
         }

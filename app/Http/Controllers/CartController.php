@@ -61,7 +61,7 @@ class CartController extends Controller
 
     public function apply_coupon_code(Request $request)
     {
-        $coupon_code  = $request->coupon_code;
+        $coupon_code = $request->coupon_code;
         if (isset($coupon_code)) {
             $coupon = Coupon::where('code', $coupon_code)->where('expiry_date', '>=', Carbon::today())->where('cart_value', '<=', Cart::instance('cart')->subtotal())->first();
             if (!$coupon) {
@@ -172,7 +172,7 @@ class CartController extends Controller
         $order->landmark = $address->landmark;
         $order->zip = $address->zip;
         $order->save();
-        
+
         foreach (Cart::instance('cart')->content() as $item) {
             $orderItem = new OrderItem();
             $orderItem->product_id = $item->id;
@@ -181,30 +181,29 @@ class CartController extends Controller
             $orderItem->quantity = $item->qty;
             $orderItem->save();
         }
-        // dd($request->mode);
 
-        
+        // dd($request->mode);
         if ($request->mode == 'razorpay') {
-            $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
             // Create an order with Razorpay
             $razorpayOrder = $api->order->create([
-                'receipt' => 'rcpt_' . $order->id,
-                'amount' => $order->total * 100, // in paise (Razorpay accepts amounts in paise)
+                'receipt' => 'rcpt_' . rand(1000, 9999),
+                'amount' => $order->total * 100,
                 'currency' => 'INR',
+                'payment_capture' => 1
             ]);
+            dd($razorpayOrder->id);
 
-            // Save the Razorpay order ID to the transaction
+            view('checkout', ['orderId' => $razorpayOrder['id']]);
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;
             $transaction->mode = 'razorpay';
-            $transaction->status = 'created';  // Transaction created but not yet paid
             $transaction->razorpay_order_id = $razorpayOrder['id'];
+            $transaction->status = 'created';
             $transaction->save();
 
-            // Redirect to Razorpay for payment
-            return redirect()->away("https://checkout.razorpay.com/v1/checkout.js?order_id={$razorpayOrder['id']}");
         } elseif ($request->mode == 'cod') {
             $transaction = new Transaction();
             $transaction->user_id = $user_id;

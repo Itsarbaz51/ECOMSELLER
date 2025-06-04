@@ -13,8 +13,7 @@
             <span class="header-user wg-user">
                 <span class="image">
                     @if (Auth::user()->image)
-                        <img src="{{ asset('storage/uploads/adminImage/' . Auth::user()->image) }}"
-                            alt="Admin Image" />
+                        <img src="{{ asset('storage/uploads/adminImage/' . Auth::user()->image) }}" alt="Admin Image" />
                     @else
                         <img src="{{ asset('images/default-admin-image.png') }}" alt="Default Avatar" />
                     @endif
@@ -41,7 +40,9 @@
                     <i class="icon-mail"></i>
                 </div>
                 <div class="body-title-2">Inbox</div>
-                <div class="number">{{ \App\Models\Order::where('status', 'Ordered')->count() ? \App\Models\Order::where('status', 'Ordered')->count() : 0 }}</div>
+                <div class="number">
+                    {{ \App\Models\Order::where('status', 'Ordered')->count() ? \App\Models\Order::where('status', 'Ordered')->count() : 0 }}
+                </div>
             </a>
         </li>
         {{-- <li>
@@ -52,15 +53,15 @@
                 <div class="body-title-2">Taskboard</div>
             </a>
         </li> --}}
-        <li>
+        {{--  <li>
             <a href="tel:+91-9649730196" class="user-item" title="Call Support">
                 <div class="icon">
                     <i class="icon-headphones"></i>
                 </div>
                 <div class="body-title-2">Support</div>
             </a>
-            
-        </li>
+
+        </li>  --}}
         <li>
             <form action="{{ route('logout') }}" id="logout-form" method="post">
                 @csrf

@@ -1,10 +1,19 @@
-<x-app-layout title="Chekout">
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Chekout']); ?>
     <main class="pt-90">
         <div class="mb-4 pb-4"></div>
         <section class="shop-checkout container">
             <h2 class="page-title">Shipping and Checkout</h2>
             <div class="checkout-steps">
-                <a href="{{ route('cart.index') }}" class="checkout-steps__item active">
+                <a href="<?php echo e(route('cart.index')); ?>" class="checkout-steps__item active">
                     <span class="checkout-steps__item-number">01</span>
                     <span class="checkout-steps__item-title">
                         <span>Shopping Bag</span>
@@ -26,8 +35,8 @@
                     </span>
                 </a>
             </div>
-            <form name="checkout-form" action="{{ route('cart.place.an.order') }}" method="POST">
-                @csrf
+            <form name="checkout-form" action="<?php echo e(route('cart.place.an.order')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="checkout-form">
                     <div class="billing-info__wrapper">
                         <div class="row">
@@ -37,110 +46,167 @@
                             <div class="col-6">
                             </div>
                         </div>
-                        @if ($address)
+                        <?php if($address): ?>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="my-account__address-list">
                                         <div class="my-account__address-list-item">
                                             <div class="my-account__address-list__detail">
-                                                <p>{{ $address->name }}</p>
-                                                <p>{{ $address->address }}</p>
-                                                <p>{{ $address->landmark }}</p>
-                                                <p>{{ $address->city }}, {{ $address->state }}, {{ $address->country }}
+                                                <p><?php echo e($address->name); ?></p>
+                                                <p><?php echo e($address->address); ?></p>
+                                                <p><?php echo e($address->landmark); ?></p>
+                                                <p><?php echo e($address->city); ?>, <?php echo e($address->state); ?>, <?php echo e($address->country); ?>
+
                                                 </p>
-                                                <p>{{ $address->zip }}</p>
+                                                <p><?php echo e($address->zip); ?></p>
                                                 <br />
-                                                <p>{{ $address->phone }}</p>
+                                                <p><?php echo e($address->phone); ?></p>
 
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="row mt-5">
                                 <div class="col-md-6">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="name" required=""
-                                            value="{{ old('name') }}">
+                                            value="<?php echo e(old('name')); ?>">
                                         <label for="name">Full Name *</label>
-                                        @error('name')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="phone" required=""
-                                            value="{{ old('phone') }}">
+                                            value="<?php echo e(old('phone')); ?>">
                                         <label for="phone">Phone Number *</label>
-                                        @error('phone')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="zip" required=""
-                                            value="{{ old('zip') }}">
+                                            value="<?php echo e(old('zip')); ?>">
                                         <label for="zip">Pincode *</label>
-                                        @error('zip')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['zip'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating mt-3 mb-3">
                                         <input type="text" class="form-control" name="state" required=""
-                                            value="{{ old('state') }}">
+                                            value="<?php echo e(old('state')); ?>">
                                         <label for="state">State *</label>
-                                        @error('state')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['state'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="city" required=""
-                                            value="{{ old('city') }}">
+                                            value="<?php echo e(old('city')); ?>">
                                         <label for="city">Town / City *</label>
-                                        @error('city')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['city'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="address" required=""
-                                            value="{{ old('address') }}">
+                                            value="<?php echo e(old('address')); ?>">
                                         <label for="address">House no, Building Name *</label>
-                                        @error('locality')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['locality'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="locality" required=""
-                                            value="{{ old('locality') }}">
+                                            value="<?php echo e(old('locality')); ?>">
                                         <label for="locality">Road Name, Area, Colony *</label>
-                                        @error('locality')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['locality'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-floating my-3">
                                         <input type="text" class="form-control" name="landmark" required=""
-                                            value="{{ old('landmark') }}">
+                                            value="<?php echo e(old('landmark')); ?>">
                                         <label for="landmark">Landmark *</label>
-                                        @error('landmark')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <?php $__errorArgs = ['landmark'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                     <div class="checkout__totals-wrapper">
                         <div class="sticky-content">
@@ -154,33 +220,37 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (Cart::instance('cart') as $item)
+                                        <?php $__currentLoopData = Cart::instance('cart'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td>
-                                                    {{ $item->name }} x {{ $item->qty }}
+                                                    <?php echo e($item->name); ?> x <?php echo e($item->qty); ?>
+
                                                 </td>
                                                 <td align="right">
-                                                    ₹{{ $item->subtotal() }}
+                                                    ₹<?php echo e($item->subtotal()); ?>
+
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
-                                @if (Session::has('discount'))
+                                <?php if(Session::has('discount')): ?>
                                     <table class="checkout-totals">
                                         <tbody>
                                             <tr>
                                                 <th>Subtotal</th>
-                                                <td class="text-right">₹{{ Cart::instance('cart')->subtotal() }}</td>
+                                                <td class="text-right">₹<?php echo e(Cart::instance('cart')->subtotal()); ?></td>
                                             </tr>
                                             <tr>
-                                                <th>Discount {{ Session::get('coupon')['code'] }}</th>
-                                                <td class="text-right">₹{{ Session::get('discount')['discount'] }}
+                                                <th>Discount <?php echo e(Session::get('coupon')['code']); ?></th>
+                                                <td class="text-right">₹<?php echo e(Session::get('discount')['discount']); ?>
+
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Subtotal After Discount</th>
-                                                <td class="text-right">₹{{ Session::get('discount')['subtotal'] }}
+                                                <td class="text-right">₹<?php echo e(Session::get('discount')['subtotal']); ?>
+
                                                 </td>
                                             </tr>
                                             <tr>
@@ -189,20 +259,20 @@
                                             </tr>
                                             <tr>
                                                 <th>VAT</th>
-                                                <td class="text-right">₹{{ Session::get('discount')['tax'] }}</td>
+                                                <td class="text-right">₹<?php echo e(Session::get('discount')['tax']); ?></td>
                                             </tr>
                                             <tr>
                                                 <th>Total</th>
-                                                <td class="text-right">₹{{ Session::get('discount')['total'] }}</td>
+                                                <td class="text-right">₹<?php echo e(Session::get('discount')['total']); ?></td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                @else
+                                <?php else: ?>
                                     <table class="checkout-totals">
                                         <tbody>
                                             <tr>
                                                 <th>SUBTOTAL</th>
-                                                <td class="text-right">₹{{ Cart::instance('cart')->subtotal() }}</td>
+                                                <td class="text-right">₹<?php echo e(Cart::instance('cart')->subtotal()); ?></td>
                                             </tr>
                                             <tr>
                                                 <th>SHIPPING</th>
@@ -210,15 +280,15 @@
                                             </tr>
                                             <tr>
                                                 <th>VAT</th>
-                                                <td class="text-right">₹{{ Cart::instance('cart')->tax() }}</td>
+                                                <td class="text-right">₹<?php echo e(Cart::instance('cart')->tax()); ?></td>
                                             </tr>
                                             <tr>
                                                 <th>TOTAL</th>
-                                                <td class="text-right">₹{{ Cart::instance('cart')->total() }}</td>
+                                                <td class="text-right">₹<?php echo e(Cart::instance('cart')->total()); ?></td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <div class="checkout__payment-methods">
 
@@ -254,7 +324,16 @@
             </form>
         </section>
     </main>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
 <script>
     // JavaScript to show UPI options when UPI is selected
     document.getElementById('mode2').addEventListener('change', function() {
@@ -263,8 +342,8 @@
         }
 
         var options = {
-            "key": "{{ env('RAZORPAY_KEY') }}", // Enter the Key ID generated from the Dashboard
-            "amount": "{{ Cart::instance('cart')->total() }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "key": "<?php echo e(env('RAZORPAY_KEY')); ?>", // Enter the Key ID generated from the Dashboard
+            "amount": "<?php echo e(Cart::instance('cart')->total()); ?>", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
             "name": "Acme Corp", //your business name
             "description": "Test Transaction",
@@ -272,7 +351,7 @@
                 const payId = response.razorpay_payment_id
                 alert('Payment successfully' + payId)
             }
-            {{--  "order_id": "{{ $orderId }}",  --}}
+            
             //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "prefill": {
                 //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number "name": "Gaurav Kumar", //your customer's name
@@ -296,3 +375,4 @@
         }
     });
 </script>
+<?php /**PATH C:\Users\hp\Desktop\ECOMSELLER\resources\views/checkout.blade.php ENDPATH**/ ?>

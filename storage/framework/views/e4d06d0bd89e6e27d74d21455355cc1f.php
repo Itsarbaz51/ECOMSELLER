@@ -1,39 +1,68 @@
-@props(['title' => '', 'bodyClass' => ''])
+<?php $attributes ??= new \Illuminate\View\ComponentAttributeBag;
+
+$__newAttributes = [];
+$__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames((['title' => '', 'bodyClass' => '']));
+
+foreach ($attributes->all() as $__key => $__value) {
+    if (in_array($__key, $__propNames)) {
+        $$__key = $$__key ?? $__value;
+    } else {
+        $__newAttributes[$__key] = $__value;
+    }
+}
+
+$attributes = new \Illuminate\View\ComponentAttributeBag($__newAttributes);
+
+unset($__propNames);
+unset($__newAttributes);
+
+foreach (array_filter((['title' => '', 'bodyClass' => '']), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
+    $$__key = $$__key ?? $__value;
+}
+
+$__defined_vars = get_defined_vars();
+
+foreach ($attributes->all() as $__key => $__value) {
+    if (array_key_exists($__key, $__defined_vars)) unset($$__key);
+}
+
+unset($__defined_vars); ?>
 
 <!DOCTYPE html>
-<html dir="ltr" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html dir="ltr" lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
 
 <head>
-    <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
+    <title><?php echo e($title); ?> | <?php echo e(config('app.name', 'Laravel')); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
     <meta name="author" content="surfside media" />
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(asset('assets/images/favicon.ico')); ?>" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
     <link
         href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css" />
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/sweetalert.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" type="text/css" />
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/swiper.min.css')); ?>" type="text/css" />
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('css/sweetalert.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/custom.css')); ?>" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 
-<body @if ($bodyClass) class="{{ $bodyClass }}" @endif>
-    {{ $slot }}
-    <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
+<body <?php if($bodyClass): ?> class="<?php echo e($bodyClass); ?>" <?php endif; ?>>
+    <?php echo e($slot); ?>
+
+    <script src="<?php echo e(asset('assets/js/plugins/jquery.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/plugins/bootstrap.bundle.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/plugins/bootstrap-slider.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/plugins/swiper.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/sweetalert.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/plugins/countdown.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/theme.js')); ?>"></script>
     <script>
         $(function() {
             $('#search-input').on('keyup', function() {
@@ -41,7 +70,7 @@
 
                 if (searchQuery.length > 2) {
                     $.ajax({
-                        url: "{{ route('home.search') }}",
+                        url: "<?php echo e(route('home.search')); ?>",
                         method: "GET",
                         data: {
                             query: searchQuery
@@ -57,7 +86,7 @@
                             } else {
                                 $.each(data, function(index, item) {
                                     let link =
-                                        "{{ route('shop.product.details', ['product_slug' => '__slug__']) }}"
+                                        "<?php echo e(route('shop.product.details', ['product_slug' => '__slug__'])); ?>"
                                         .replace('__slug__', item.slug);
 
                                     $("#box-content-search").append(`
@@ -97,3 +126,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\Users\hp\Desktop\ECOMSELLER\resources\views/layouts/base.blade.php ENDPATH**/ ?>

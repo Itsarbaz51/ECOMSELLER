@@ -41,7 +41,7 @@ class OtpController extends Controller
 
         $user = User::find($userId);
         if ($user) {
-            $user->email_verified_at = true;
+            $user->is_email_verified = true;
             $user->save();
 
             Session::forget(['otp', 'otp_user_id', 'otp_created_at']);

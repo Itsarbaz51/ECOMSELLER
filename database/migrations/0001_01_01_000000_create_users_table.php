@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('mobile')->unique();
-            $table->boolean('mobile_verified_at')->nullable();
+            $table->boolean('is_email_verified')->default(false);
             $table->string('password');
             $table->string('utype')->default('USR')->comment('ADM for admin and USR for user');
             $table->rememberToken();

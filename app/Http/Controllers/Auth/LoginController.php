@@ -65,7 +65,7 @@ class LoginController extends Controller
         $user = User::where('email', $request->input('email'))->first();
 
         // If user exists and mobile not verified
-        if ($user && is_null($user->email_verified_at)) {
+        if ($user && is_null($user->is_email_verified)) {
             $otp = rand(1000, 9999);
             Session::put('otp', $otp);
             Session::put('otp_user_id', $user->id);
@@ -97,7 +97,7 @@ class LoginController extends Controller
     {
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user && is_null($user->email_verified_at)) {
+        if ($user && is_null($user->is_email_verified)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'email' => ['Email is not verified.'],
             ]);

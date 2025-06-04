@@ -23,11 +23,11 @@ class User extends Authenticatable
         'mobile',
         'password',
         'remember_token',
-        'mobile_verified_at',
+        'is_email_verified',
     ];
     
     protected $dates = [
-        'mobile_verified_at',
+        'is_email_verified',
     ];
     
     
@@ -58,7 +58,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'is_email_verified' => 'boolean',
             'password' => 'hashed',
         ];
     }

@@ -44,7 +44,7 @@ class RegisterController extends Controller
             'mobile'             => $data['mobile'],
             'password'           => Hash::make($data['password']),
             'remember_token'     => Str::random(60),
-            'email_verified_at' => false,
+            'is_email_verified' => false,
         ]);
 
         $this->generateOtp($user);

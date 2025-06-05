@@ -276,7 +276,6 @@
         </section>
     </main>
 </x-app-layout>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     $(function() {
         $('.qty-control__increase').on('click', function() {

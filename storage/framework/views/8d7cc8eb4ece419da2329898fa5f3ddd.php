@@ -334,40 +334,45 @@ unset($__errorArgs, $__bag); ?>
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
 <?php endif; ?>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    // JavaScript to show UPI options when UPI is selected
-    document.getElementById('mode2').addEventListener('change', function() {
-        if (this.checked) {
-            document.getElementById('upi-options').style.display = 'block';
-        }
+    const razorpayRadio = document.getElementById('mode1');
+    const checkoutForm = document.querySelector('form[name="checkout-form"]');
 
-        var options = {
-            "key": "<?php echo e(env('RAZORPAY_KEY')); ?>", // Enter the Key ID generated from the Dashboard
-            "amount": "<?php echo e(Cart::instance('cart')->total()); ?>", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            "currency": "INR",
-            "name": "Acme Corp", //your business name
-            "description": "Test Transaction",
-            'handler': function(response) {
-                const payId = response.razorpay_payment_id
-                alert('Payment successfully' + payId)
-            }
-            
-            //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            "prefill": {
-                //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number "name": "Gaurav Kumar", //your customer's name
-                "email": "gaurav.kumar@example.com",
-                "contact": "9000090000"
-            },
-            "notes": {
-                "address": "Razorpay Corporate Office"
-            },
-            "theme": {
-                "color": "#3399cc"
-            }
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
-        };
-    })
+    checkoutForm.addEventListener('submit', function(e) {
+        if (razorpayRadio.checked) {
+            e.preventDefault();
+
+            const options = {
+                "key": "<?php echo e(env('RAZORPAY_KEY')); ?>",
+                "amount": <?php echo e(Cart::instance('cart')->total() * 100); ?>,
+                "currency": "INR",
+                "name": "Your Business Name",
+                "description": "Checkout Payment",
+                "order_id": "<?php echo e($orderId); ?>",
+                "handler": function(response) {
+                    // Attach payment ID to form and submit
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'razorpay_payment_id';
+                    input.value = response.razorpay_payment_id;
+                    checkoutForm.appendChild(input);
+                    checkoutForm.submit();
+                },
+                "prefill": {
+                    "name": "<?php echo e(Auth::user()->name); ?>",
+                    "email": "<?php echo e(Auth::user()->email); ?>",
+                    "contact": "<?php echo e(Auth::user()->phone ?? '9999999999'); ?>"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+    });
 
     document.getElementById('mode1').addEventListener('change', function() {
         if (this.checked) {

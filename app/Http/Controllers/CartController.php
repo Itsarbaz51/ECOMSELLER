@@ -182,10 +182,10 @@ class CartController extends Controller
             $orderItem->save();
         }
 
-        // dd($request->mode);
         if ($request->mode == 'razorpay') {
             $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
+            // dd($razorpayOrder->id);
             // Create an order with Razorpay
             $razorpayOrder = $api->order->create([
                 'receipt' => 'rcpt_' . rand(1000, 9999),
@@ -193,16 +193,20 @@ class CartController extends Controller
                 'currency' => 'INR',
                 'payment_capture' => 1
             ]);
-            dd($razorpayOrder->id);
+            // dd($razorpayOrder);
 
-            view('checkout', ['orderId' => $razorpayOrder['id']]);
+
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;
             $transaction->mode = 'razorpay';
             $transaction->razorpay_order_id = $razorpayOrder['id'];
-            $transaction->status = 'razorpay';
+            $transaction->status = 'pending';
             $transaction->save();
+            return view('checkout', [
+                'orderId' => $razorpayOrder['id'],
+                'order' => $order
+            ]);
 
         } elseif ($request->mode == 'cod') {
             $transaction = new Transaction();

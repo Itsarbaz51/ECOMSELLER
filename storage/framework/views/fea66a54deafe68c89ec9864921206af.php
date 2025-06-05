@@ -252,7 +252,6 @@
 <?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
 <?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
 <?php endif; ?>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     $(function() {
         $('.qty-control__increase').on('click', function() {

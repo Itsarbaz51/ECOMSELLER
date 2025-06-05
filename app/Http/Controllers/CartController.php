@@ -76,6 +76,7 @@ class CartController extends Controller
                 $this->calculateDiscount();
                 return redirect()->back()->with('success', 'Coupon code applied successfully!');
             }
+
         } else {
             return redirect()->back()->with('error', 'Invalid coupon code');
         }
@@ -123,7 +124,7 @@ class CartController extends Controller
 
     public function place_an_order(Request $request)
     {
-        $user_id = Auth::user()->id;
+        $user_id = Auth::id();
         $address = Address::where('user_id', $user_id)->where('isdefault', true)->first();
 
         if (!$address) {
@@ -138,93 +139,78 @@ class CartController extends Controller
                 'landmark' => 'required',
             ]);
 
-            $address = new Address();
-            $address->user_id = $user_id;
-            $address->name = $request->name;
-            $address->phone = $request->phone;
-            $address->zip = $request->zip;
-            $address->state = $request->state;
-            $address->city = $request->city;
-            $address->address = $request->address;
-            $address->locality = $request->locality;
-            $address->landmark = $request->landmark;
-            $address->country = 'India';
-            $address->isdefault = true;
-            $address->save();
+            $address = Address::create([
+                'user_id' => $user_id,
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'zip' => $request->zip,
+                'state' => $request->state,
+                'city' => $request->city,
+                'address' => $request->address,
+                'locality' => $request->locality,
+                'landmark' => $request->landmark,
+                'country' => 'India',
+                'isdefault' => true,
+            ]);
         }
-        $this->setAmountforCheckout();
 
+        $this->setAmountforCheckout();
 
         $order = new Order();
         $order->user_id = $user_id;
-        // dd(Session::get('checkout'));
         $order->subtotal = floatval(str_replace(',', '', Session::get('checkout')['subtotal']));
         $order->discount = floatval(str_replace(',', '', Session::get('checkout')['discount']));
         $order->tax = floatval(str_replace(',', '', Session::get('checkout')['tax']));
         $order->total = floatval(str_replace(',', '', Session::get('checkout')['total']));
-        $order->name = $address->name;
-        $order->phone = $address->phone;
-        $order->locality = $address->locality;
-        $order->address = $address->address;
-        $order->city = $address->city;
-        $order->state = $address->state;
-        $order->country = $address->country;
-        $order->landmark = $address->landmark;
-        $order->zip = $address->zip;
+        $order->fill($address->only(['name', 'phone', 'locality', 'address', 'city', 'state', 'country', 'landmark', 'zip']));
         $order->save();
 
         foreach (Cart::instance('cart')->content() as $item) {
-            $orderItem = new OrderItem();
-            $orderItem->product_id = $item->id;
-            $orderItem->order_id = $order->id;
-            $orderItem->price = $item->price;
-            $orderItem->quantity = $item->qty;
-            $orderItem->save();
+            OrderItem::create([
+                'product_id' => $item->id,
+                'order_id' => $order->id,
+                'price' => $item->price,
+                'quantity' => $item->qty,
+            ]);
         }
 
         if ($request->mode == 'razorpay') {
             $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
-            // dd($razorpayOrder->id);
-            // Create an order with Razorpay
             $razorpayOrder = $api->order->create([
                 'receipt' => 'rcpt_' . rand(1000, 9999),
                 'amount' => $order->total * 100,
                 'currency' => 'INR',
                 'payment_capture' => 1
             ]);
-            // dd($razorpayOrder);
 
-
-            $transaction = new Transaction();
-            $transaction->user_id = $user_id;
-            $transaction->order_id = $order->id;
-            $transaction->mode = 'razorpay';
-            $transaction->razorpay_order_id = $razorpayOrder['id'];
-            $transaction->status = 'pending';
-            $transaction->save();
-            return view('checkout', [
-                'orderId' => $razorpayOrder['id'],
-                'order' => $order
+            Transaction::create([
+                'user_id' => $user_id,
+                'order_id' => $order->id,
+                'mode' => 'razorpay',
+                'razorpay_order_id' => $razorpayOrder['id'],
+                'status' => 'pending',
             ]);
 
-        } elseif ($request->mode == 'cod') {
-            $transaction = new Transaction();
-            $transaction->user_id = $user_id;
-            $transaction->order_id = $order->id;
-            $transaction->mode = $request->mode;
-            $transaction->status = 'pending';
-            $transaction->save();
+        }
+
+        if ($request->mode == 'cod') {
+            Transaction::create([
+                'user_id' => $user_id,
+                'order_id' => $order->id,
+                'mode' => 'cod',
+                'status' => 'pending',
+            ]);
         }
 
         Cart::instance('cart')->destroy();
-        Session::forget('checkout');
-        Session::forget('coupon');
-        Session::forget('discount');
+        Session::forget(['checkout', 'coupon', 'discount']);
         Session::put('order_id', $order->id);
 
         return redirect()->route('cart.order.confirmation');
     }
+
+
 
     public function setAmountforCheckout()
     {

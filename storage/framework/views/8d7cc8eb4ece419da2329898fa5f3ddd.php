@@ -349,14 +349,14 @@ unset($__errorArgs, $__bag); ?>
                 "currency": "INR",
                 "name": "Your Business Name",
                 "description": "Checkout Payment",
-                "order_id": "<?php echo e($orderId); ?>",
                 "handler": function(response) {
-                    // Attach payment ID to form and submit
+                    // Add razorpay_payment_id to form and submit
                     const input = document.createElement('input');
                     input.type = 'hidden';
                     input.name = 'razorpay_payment_id';
                     input.value = response.razorpay_payment_id;
                     checkoutForm.appendChild(input);
+
                     checkoutForm.submit();
                 },
                 "prefill": {
@@ -373,6 +373,7 @@ unset($__errorArgs, $__bag); ?>
             rzp.open();
         }
     });
+
 
     document.getElementById('mode1').addEventListener('change', function() {
         if (this.checked) {

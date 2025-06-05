@@ -51,6 +51,9 @@ Route::controller(CartController::class)->group(function () {
     Route::post('/place-an-order', 'place_an_order')->name('cart.place.an.order');
     Route::get('/order_confirmation', 'order_confirmation')->name('cart.order.confirmation');
 });
+// In web.php
+Route::post('/create-razorpay-order', [CartController::class, 'createRazorpayOrder']);
+
 
 Route::controller(WishlistController::class)->group(function () {
     Route::post('/wishlist/add', 'add_to_wishlist')->name('wishlist.add');

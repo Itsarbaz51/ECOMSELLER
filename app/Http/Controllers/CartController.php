@@ -175,24 +175,16 @@ class CartController extends Controller
         }
 
         if ($request->mode == 'razorpay') {
-            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-
-            $razorpayOrder = $api->order->create([
-                'receipt' => 'rcpt_' . rand(1000, 9999),
-                'amount' => $order->total * 100,
-                'currency' => 'INR',
-                'payment_capture' => 1
-            ]);
-
             Transaction::create([
                 'user_id' => $user_id,
                 'order_id' => $order->id,
                 'mode' => 'razorpay',
-                'razorpay_order_id' => $razorpayOrder['id'],
-                'status' => 'pending',
+                'razorpay_order_id' => $request->razorpay_order_id, // From frontend
+                'razorpay_payment_id' => $request->razorpay_payment_id,
+                'status' => $request->razorpay_payment_id ? 'success' : 'failed',
             ]);
-
         }
+
 
         if ($request->mode == 'cod') {
             Transaction::create([
@@ -210,6 +202,22 @@ class CartController extends Controller
         return redirect()->route('cart.order.confirmation');
     }
 
+    public function createRazorpayOrder(Request $request)
+    {
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $amount = $request->amount;
+
+        $razorpayOrder = $api->order->create([
+            'receipt' => 'rcpt_' . rand(1000, 9999),
+            'amount' => $amount,
+            'currency' => 'INR',
+            'payment_capture' => 1
+        ]);
+
+        return response()->json([
+            'order_id' => $razorpayOrder['id']
+        ]);
+    }
 
 
     public function setAmountforCheckout()

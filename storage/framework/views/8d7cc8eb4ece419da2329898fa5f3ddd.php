@@ -339,23 +339,44 @@ unset($__errorArgs, $__bag); ?>
     const razorpayRadio = document.getElementById('mode1');
     const checkoutForm = document.querySelector('form[name="checkout-form"]');
 
-    checkoutForm.addEventListener('submit', function(e) {
+    checkoutForm.addEventListener('submit', async function(e) {
         if (razorpayRadio.checked) {
             e.preventDefault();
 
+            const amount = <?php echo e(Cart::instance('cart')->total() * 100); ?>;
+
+            // Step 1: Create Razorpay order on backend
+            const orderRes = await fetch('/create-razorpay-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    amount: amount
+                })
+            });
+
+            const orderData = await orderRes.json();
+            const razorpay_order_id = orderData.order_id;
+
             const options = {
                 "key": "<?php echo e(env('RAZORPAY_KEY')); ?>",
-                "amount": <?php echo e(Cart::instance('cart')->total() * 100); ?>,
+                "amount": amount,
                 "currency": "INR",
                 "name": "Your Business Name",
                 "description": "Checkout Payment",
+                "order_id": razorpay_order_id,
                 "handler": function(response) {
-                    // Add razorpay_payment_id to form and submit
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'razorpay_payment_id';
-                    input.value = response.razorpay_payment_id;
-                    checkoutForm.appendChild(input);
+                    // Attach to form
+                    ['razorpay_payment_id', 'razorpay_order_id', 'razorpay_signature'].forEach(
+                        key => {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            input.value = response[key];
+                            checkoutForm.appendChild(input);
+                        });
 
                     checkoutForm.submit();
                 },
@@ -374,10 +395,9 @@ unset($__errorArgs, $__bag); ?>
         }
     });
 
-
     document.getElementById('mode1').addEventListener('change', function() {
         if (this.checked) {
-            document.getElementById('upi-options').style.display = 'none'; // Hide UPI options
+            document.getElementById('upi-options').style.display = 'none';
         }
     });
 </script>

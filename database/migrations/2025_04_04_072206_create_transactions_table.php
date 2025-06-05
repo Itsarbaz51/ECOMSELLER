@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('razorpay_order_id')->nullable();
+            $table->string('razorpay_payment_id')->nullable();
             $table->enum('mode', ['cod', 'razorpay']);
             $table->enum('status', ['pending', 'success', 'failed', 'refunded'])->default('pending');
             $table->timestamps();
